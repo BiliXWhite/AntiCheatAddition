@@ -16,6 +16,7 @@ public final class Log
     private static final Level CONSOLE_LEVEL = getConfigLevel("Debug.console_level");
     private static final Level FILE_LEVEL = getConfigLevel("Debug.file_level");
     private static final Level PLAYER_LEVEL = getConfigLevel("Debug.player_level");
+    private static final Level PLAYER_CHAT_LEVEL = getConfigLevel("Debug.player_chat_level");
 
     private static Level getConfigLevel(String path)
     {
@@ -86,15 +87,16 @@ public final class Log
         if (!Level.OFF.equals(CONSOLE_LEVEL)) INSTANCE.logger.addHandler(new ConsoleLogHandler(CONSOLE_LEVEL));
         if (!Level.OFF.equals(FILE_LEVEL)) logFileHandler.startCycle(this.logger, FILE_LEVEL);
         if (!Level.OFF.equals(PLAYER_LEVEL)) INSTANCE.logger.addHandler(new DebugUserLogHandler(PLAYER_LEVEL));
+        if (!Level.OFF.equals(PLAYER_CHAT_LEVEL)) INSTANCE.logger.addHandler(new PlayerChatLogHandler(PLAYER_CHAT_LEVEL));
 
         // Set the smallest level as the main logger (smaller -> more messages) to ensure all handlers get their messages.
-        INSTANCE.logger.setLevel(minLevel(CONSOLE_LEVEL, FILE_LEVEL, PLAYER_LEVEL));
+        INSTANCE.logger.setLevel(minLevel(CONSOLE_LEVEL, FILE_LEVEL, PLAYER_LEVEL, PLAYER_CHAT_LEVEL));
 
         // Add the violation debug messages.
         AntiCheatAddition.getInstance().registerListener(new ViolationLogger());
 
         fine(() -> "Logger handlers: " + Arrays.stream(INSTANCE.logger.getHandlers()).map(handler -> handler.getClass().getName() + " with level " + handler.getLevel()).collect(Collectors.joining(", ")));
-        info(() -> "Logging setup finished. Console: " + CONSOLE_LEVEL.getName() + " | File: " + FILE_LEVEL.getName() + " | Player: " + PLAYER_LEVEL.getName());
+        info(() -> "Logging setup finished. Console: " + CONSOLE_LEVEL.getName() + " | File: " + FILE_LEVEL.getName() + " | Player: " + PLAYER_LEVEL.getName() + " | PlayerChat: " + PLAYER_CHAT_LEVEL.getName());
     }
 
     public static Level minLevel(Level... levels)

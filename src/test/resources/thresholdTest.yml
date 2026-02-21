@@ -28,3 +28,4 @@ Debug:
   console_level: "INFO"
   file_level: "FINE"
   player_level: "OFF"
+  player_chat_level: "OFF"

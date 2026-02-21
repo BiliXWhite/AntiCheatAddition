@@ -841,3 +841,8 @@ Debug:
   # The logging level for the players with debug permission. They can still disable them by using the debug command
   # even when this is not "OFF".
   player_level: "OFF"
+
+  # The logging level for sending messages to all online players in chat.
+  # Set this to "FINER" to allow all players to see FINER level debug messages in chat.
+  # WARNING: This will send messages to ALL online players, not just those with debug permission.
+  player_chat_level: "FINE"
